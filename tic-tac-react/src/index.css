@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --fondo: #080b18;
+  --panel: #111629;
+  --panel-claro: #171c36;
+  --texto: #f5f7ff;
+  --muted: #929bb9;
+  --magenta: #fa2193;
+  --rosa: #ff3ca5;
+  --cian: #03e7f4;
+  --amarillo: #f7c928;
+  --borde: #26304c;
+  --sombra: rgba(0, 0, 0, .35);
+}
+
+html { min-width: 320px; }
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--texto);
+  background:
+    radial-gradient(circle at 10% 16%, rgba(0, 210, 229, .12), transparent 26rem),
+    radial-gradient(circle at 88% 82%, rgba(240, 24, 140, .1), transparent 32rem),
+    var(--fondo);
+  font-family: 'Space Grotesk', sans-serif;
+}
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.pagina { min-height: 100vh; display: flex; flex-direction: column; }
+.navbar { width: min(100%, 1180px); margin: 0 auto; padding: 1.45rem 2rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+.marca { display: flex; align-items: center; gap: .85rem; color: var(--texto); text-decoration: none; }
+.marca-icono { display: grid; width: 3.7rem; height: 3.7rem; place-items: center; border: 2px solid var(--cian); border-radius: 1rem; color: var(--cian); font-size: 1.7rem; background: #151a31; box-shadow: 0 0 14px rgba(3, 231, 244, .35), inset 0 0 15px rgba(250, 33, 147, .22); }
+.marca strong { display: block; color: var(--magenta); font: 800 2rem/1 'Baloo 2', sans-serif; letter-spacing: -.04em; }
+.marca strong span { color: var(--cian); }
+.marca small { display: block; margin-top: .28rem; color: var(--muted); font-size: .85rem; font-weight: 700; letter-spacing: .18em; }
+.navbar-acciones { display: flex; gap: .75rem; }
+.icono-boton { display: grid; width: 4rem; height: 4rem; place-items: center; color: var(--muted); border: 2px solid var(--borde); border-radius: 1.35rem; background: rgba(17, 22, 41, .8); font-size: 1.7rem; text-decoration: none; transition: .2s ease; }
+.icono-boton:hover { color: var(--cian); border-color: var(--cian); transform: translateY(-2px); }
+
+.inicio, .juego, .puntajes { width: min(100%, 980px); margin: 0 auto; padding: 2.8rem 1.25rem 4rem; text-align: center; }
+.inicio { flex: 1; display: grid; place-content: center; gap: 1.3rem; }
+.titulo { color: var(--magenta); font: 800 clamp(3rem, 8vw, 5.5rem)/.95 'Baloo 2', sans-serif; text-shadow: 0 0 28px rgba(250, 33, 147, .3); }
+.titulo::first-letter { color: var(--cian); }
+.subtitulo, .mensaje { color: var(--muted); }
+.titulo-pagina { font: 800 clamp(2.1rem, 5vw, 3.5rem)/1 'Baloo 2', sans-serif; }
+.titulo-pagina span { color: var(--cian); text-shadow: 0 0 22px rgba(3, 231, 244, .32); }
+.saludo-fila { display: flex; align-items: center; justify-content: center; gap: 1.3rem; flex-wrap: wrap; }
+.estado-partida { display: inline-flex; align-items: center; gap: .45rem; padding: .55rem 1rem; color: var(--cian); border: 1px solid rgba(3, 231, 244, .55); border-radius: 999px; background: rgba(3, 231, 244, .08); font-weight: 700; }
+.estado-partida i { width: .65rem; height: .65rem; border-radius: 50%; background: var(--cian); box-shadow: 0 0 12px var(--cian); }
+.juego { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+.turno-actual { display: flex; align-items: center; gap: .75rem; padding: .55rem 1.2rem .55rem 1.45rem; border: 2px solid rgba(250, 33, 147, .65); border-radius: 999px; box-shadow: 0 0 24px rgba(250, 33, 147, .2); color: var(--muted); font-weight: 700; letter-spacing: .08em; }
+.turno-actual strong { color: var(--magenta); font: 800 1.35rem 'Baloo 2', sans-serif; letter-spacing: 0; }
+.turno-actual b { display: grid; width: 2.25rem; height: 2.25rem; place-items: center; border: 2px solid var(--magenta); border-radius: .65rem; color: var(--magenta); font-size: 1.25rem; }
+
+.marcador { width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.marcador-item { min-height: 7.4rem; display: flex; flex-direction: column; justify-content: center; gap: .45rem; padding: .9rem; border: 2px solid var(--borde); border-radius: 1.8rem; background: rgba(17, 22, 41, .82); box-shadow: 0 16px 35px var(--sombra); }
+.marcador-item:nth-child(1) { border-color: rgba(3, 231, 244, .4); }
+.marcador-item:nth-child(2) { border-color: rgba(250, 33, 147, .4); }
+.marcador-item:nth-child(3) { border-color: rgba(247, 201, 40, .45); }
+.marcador-item:nth-child(4) { border-color: rgba(3, 231, 244, .65); }
+.marcador-label { color: var(--muted); font-size: .78rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+.marcador-item:nth-child(1) .marcador-label, .marcador-item:nth-child(1) .marcador-valor { color: var(--cian); }
+.marcador-item:nth-child(2) .marcador-label, .marcador-item:nth-child(2) .marcador-valor { color: #ff698c; }
+.marcador-item:nth-child(3) .marcador-label, .marcador-item:nth-child(3) .marcador-valor { color: var(--amarillo); }
+.marcador-item:nth-child(4) .marcador-label, .marcador-item:nth-child(4) .marcador-valor { color: var(--cian); }
+.marcador-valor { color: var(--texto); font: 800 2.4rem/1 'Baloo 2', sans-serif; overflow-wrap: anywhere; }
+
+.tablero { width: min(100%, 620px); display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.15rem; padding: 1.5rem; border: 2px solid #303a58; border-radius: 2.6rem; background: rgba(18, 24, 45, .9); box-shadow: 0 25px 70px rgba(0, 0, 0, .45), inset 0 0 35px rgba(3, 231, 244, .035); }
+.casilla { position: relative; aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; border: 2px solid #252e4d; border-radius: 1.8rem; color: var(--texto); background: var(--panel-claro); cursor: pointer; transition: .2s ease; }
+.casilla:not(:disabled):hover { border-color: var(--cian); box-shadow: 0 0 25px rgba(3, 231, 244, .2); transform: translateY(-3px); }
+.casilla:disabled { cursor: default; }
+.casilla-vacia { width: .8rem; height: .8rem; border-radius: 50%; background: #202944; }
+.simbolo-x { color: var(--magenta); font: 800 clamp(4rem, 12vw, 7rem)/1 'Space Grotesk', sans-serif; text-shadow: 0 0 25px rgba(250, 33, 147, .65); }
+.simbolo-o { position: relative; display: block; width: clamp(3.8rem, 10vw, 6rem); height: clamp(3.8rem, 10vw, 6rem); filter: drop-shadow(0 0 11px rgba(3, 231, 244, .8)); }
+.huella-dedo, .huella-almohadilla { position: absolute; display: block; background: var(--cian); }
+.huella-dedo { top: 12%; width: 20%; height: 34%; border-radius: 60% 60% 48% 48%; }
+.huella-dedo-1 { left: 5%; transform: rotate(-35deg); }
+.huella-dedo-2 { left: 28%; top: 2%; transform: rotate(-10deg); }
+.huella-dedo-3 { right: 28%; top: 2%; transform: rotate(10deg); }
+.huella-dedo-4 { right: 5%; transform: rotate(35deg); }
+.huella-almohadilla { left: 19%; bottom: 5%; width: 62%; height: 57%; border-radius: 48% 48% 55% 55%; transform: rotate(180deg); }
+.casilla.ocupada { animation: aparecer .3s ease-out; }
+.casilla.ganadora { border-color: var(--cian); box-shadow: 0 0 28px rgba(3, 231, 244, .5); }
+@keyframes aparecer { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: scale(1); } }
+
+.acciones { width: 100%; display: flex; flex-direction: column; gap: 1.3rem; align-items: center; }
+.modo-partida { width: min(100%, 650px); display: grid; grid-template-columns: 1fr 1fr; padding: .25rem; border: 2px solid var(--borde); border-radius: 1.5rem; background: var(--panel); color: var(--muted); font-weight: 700; }
+.modo-partida span { padding: .85rem .6rem; border-radius: 1.2rem; }
+.modo-partida .modo-activo { color: var(--cian); border: 1px solid rgba(3, 231, 244, .6); background: rgba(3, 231, 244, .07); }
+.boton { border: 0; border-radius: 1.5rem; padding: .95rem 1.7rem; color: var(--texto); background: var(--panel-claro); cursor: pointer; font-weight: 700; transition: .2s ease; }
+.boton:hover { transform: translateY(-2px); }
+.boton-reiniciar { width: min(100%, 650px); color: white; background: linear-gradient(100deg, #f51b91, #9f38ed 50%, #04dced); box-shadow: 0 14px 35px rgba(250, 33, 147, .25); font: 800 1.45rem 'Baloo 2', sans-serif; }
+.boton-reiniciar:disabled { opacity: .65; cursor: wait; }
+.formulario, .resultado, .tabla-contenedor { padding: 2rem; border: 1px solid var(--borde); border-radius: 1.5rem; background: var(--panel); box-shadow: 0 20px 55px var(--sombra); }
+.formulario { width: min(100%, 400px); margin: auto; display: flex; flex-direction: column; gap: .8rem; text-align: left; }
+.formulario label { color: var(--cian); font-weight: 700; }
+.formulario input { padding: .8rem 1rem; border: 1px solid var(--borde); border-radius: .8rem; outline: none; color: var(--texto); background: var(--panel-claro); }
+.formulario input:focus { border-color: var(--cian); box-shadow: 0 0 0 3px rgba(3, 231, 244, .12); }
+.boton-principal { background: linear-gradient(100deg, var(--magenta), #a43ce9); }
+.resultado { display: flex; flex-direction: column; gap: 1rem; }
+.resultado-titulo { color: var(--cian); font: 800 1.8rem 'Baloo 2', sans-serif; }
+.resultado-mensaje { color: var(--muted); }
+.resultado-acciones { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; }
+.mensaje-error { color: #ff698c; font-weight: 700; }
+.tabla-contenedor { width: min(100%, 760px); overflow-x: auto; margin: auto; }
+.tabla { width: 100%; border-collapse: collapse; }
+.tabla th, .tabla td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--borde); }
+.tabla th { color: var(--cian); font-size: .8rem; text-transform: uppercase; }
+.resultado-pill { color: var(--cian); }
+.resultado-pill.derrota { color: #ff698c; }
+.resultado-pill.empate { color: var(--amarillo); }
+
+@media (max-width: 650px) {
+  .navbar { padding: 1rem 1rem .6rem; }
+  .marca-icono { width: 3rem; height: 3rem; font-size: 1.35rem; }
+  .marca strong { font-size: 1.6rem; }
+  .marca small { font-size: .65rem; }
+  .icono-boton { width: 3rem; height: 3rem; border-radius: 1rem; }
+  .juego, .inicio, .puntajes { padding: 2rem .8rem 3rem; }
+  .marcador { gap: .55rem; }
+  .marcador-item { min-height: 6.2rem; padding: .5rem; border-radius: 1.25rem; }
+  .marcador-label { font-size: .65rem; letter-spacing: .04em; }
+  .marcador-valor { font-size: 1.8rem; }
+  .tablero { gap: .65rem; padding: .8rem; border-radius: 1.7rem; }
+  .casilla { border-radius: 1rem; }
+  .modo-partida { font-size: .8rem; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
