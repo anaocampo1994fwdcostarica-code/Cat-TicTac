@@ -22,8 +22,15 @@ Responder al Webhook (respuesta al frontend)
 2. **Condición: ¿Victoria?** — Nodo IF que comprueba si `resultado === "Victoria"`.
 3. **Mensaje de victoria** — Asigna `mensaje = "¡Felicidades! Ganaste la partida."`
 4. **Mensaje de empate o derrota** — Asigna `mensaje = "Partida finalizada. ¡Sigue jugando!"`
-5. **Guardar resultado en JSON Server** — Envía la partida a `http://localhost:3000/partidas` (JSON Server).
+5. **Guardar resultado en JSON Server** — Nodo HTTP Request que envía la partida
+   a `http://localhost:3000/partidas` (JSON Server) incluyendo el `mensaje`
+   asignado en el paso anterior.
 6. **Responder al Webhook** — Devuelve al frontend `{ jugador, resultado, mensaje }`.
+
+> **Respaldo en el frontend:** `src/pages/Juego.jsx` envía primero el resultado
+> a este Webhook. Si n8n no está activo, la app guarda la partida directamente
+> en JSON Server y muestra el aviso correspondiente, de modo que el historial
+> nunca se pierde.
 
 ## Datos que recibe el Webhook
 

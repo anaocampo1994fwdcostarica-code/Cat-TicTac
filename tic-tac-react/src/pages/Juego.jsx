@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import Marcador from '../components/Marcador.jsx'
 import Navbar from '../components/Navbar.jsx'
 import Resultado from '../components/Resultado.jsx'
@@ -10,6 +10,8 @@ import { enviarResultadoN8N } from '../services/n8n.js'
 
 export default function Juego() {
   const { jugador } = useParams()
+  const [searchParams] = useSearchParams()
+  const modoSeleccionado = searchParams.get('modo') === 'persona' ? 'persona' : 'ia'
   const navigate = useNavigate()
   const {
     tablero,
@@ -38,7 +40,7 @@ export default function Juego() {
     }
     if (!iniciadaRef.current) {
       iniciadaRef.current = true
-      iniciar(jugador, 'ia')
+      iniciar(jugador, modoSeleccionado)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jugador, navigate])
@@ -62,17 +64,20 @@ export default function Juego() {
 
     async function registrarPartida() {
       try {
+        await enviarResultadoN8N(partida)
+        return
+      } catch {
+        // n8n no está disponible: se usa JSON Server como respaldo
+      }
+
+      try {
         await guardarPartida(partida)
       } catch {
         setMensaje('No fue posible guardar la partida.')
         return
       }
 
-      try {
-        await enviarResultadoN8N(partida)
-      } catch {
-        setMensaje('Partida guardada, pero no fue posible conectar con n8n.')
-      }
+      setMensaje('Partida guardada, pero no fue posible conectar con n8n.')
     }
 
     registrarPartida()
@@ -99,7 +104,7 @@ export default function Juego() {
 
         <div className="turno-actual">
           <span>TURNO DE</span>
-          <strong>{jugador}</strong>
+          <strong>{turno === 'X' ? jugador : oponente}</strong>
           <b>{turno}</b>
         </div>
 
@@ -127,8 +132,11 @@ export default function Juego() {
 
         <div className="acciones">
           <div className="modo-partida" aria-label="Modo de juego">
-            <span className="modo-activo">▣ &nbsp;vs IA Bot Gatuno</span>
-            <span>♟ &nbsp;2 Jugadores</span>
+            {modo === 'ia' ? (
+              <span className="modo-activo">▣ &nbsp;vs IA Bot Gatuno</span>
+            ) : (
+              <span className="modo-activo">♟ &nbsp;2 Jugadores</span>
+            )}
           </div>
           <button
             type="button"

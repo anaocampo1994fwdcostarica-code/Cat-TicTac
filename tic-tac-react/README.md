@@ -2,15 +2,17 @@
 
 Juego de Gato (Tic Tac Toe) hecho con **React**, **Vite** y **React Router DOM**.
 
-El jugador ingresa su nombre, juega al Gato 3x3 contra otra persona en el mismo
-dispositivo, y al terminar la partida el resultado se guarda en **JSON Server**
-y se envía a un **Webhook de n8n**. Se puede consultar el historial de partidas.
+El jugador ingresa su nombre, elige jugar contra la **IA** o en modo
+**2 jugadores** en el mismo dispositivo, y al terminar la partida el resultado
+se envía a un **Webhook de n8n** (que lo registra en JSON Server). Si n8n no
+está activo, la app guarda la partida directamente en **JSON Server** como
+respaldo. Se puede consultar el historial de partidas.
 
 ## Descripción
 
 Aplicación web de una sola página (SPA) con tres vistas: inicio, juego y puntajes.
 
-- El jugador escribe su nombre para comenzar.
+- El jugador escribe su nombre y elige el modo de juego (IA o 2 jugadores).
 - Los turnos alternan entre X y O (X siempre empieza).
 - Al terminar, se detecta ganador o empate automáticamente.
 - El resultado se registra en JSON Server y se notifica a n8n.
@@ -20,14 +22,26 @@ Aplicación web de una sola página (SPA) con tres vistas: inicio, juego y punta
 
 - Tablero 3x3 responsive.
 - Detección de ganador, empate y casillas ocupadas.
+- Dos modos de juego: **vs IA Bot Gatuno** o **2 jugadores** (mismo dispositivo).
 - Marcador con turno, victorias, derrotas, empates y movimientos.
-- Guardado de partidas con JSON Server (`GET` y `POST`).
+- Guardado de partidas: n8n como vía principal y JSON Server como respaldo.
 - Integración con n8n mediante Webhook.
 - Diseño moderno con violeta, azul y blanco.
 - Manejo de errores visuales (nombre vacío, carga de partidas, n8n caído, etc.).
 
-> Si n8n no está disponible, la partida **no se pierde**: se guarda en JSON
-> Server y se muestra: *"Partida guardada, pero no fue posible conectar con n8n."*
+> Si n8n no está disponible, la partida **no se pierde**: la app la guarda en
+> JSON Server y se muestra: *"Partida guardada, pero no fue posible conectar con n8n."*
+
+## Modos de juego
+
+En el inicio se elige entre:
+
+- **vs IA Bot Gatuno:** el jugador (X) compite contra la IA (O) en el mismo tablero.
+- **2 Jugadores:** X y O se alternan en el mismo dispositivo; la API valida el
+  turno y rechaza movimientos fuera de turno.
+
+El modo se transmite como parámetro de la URL: `/juego/:jugador?modo=ia` o
+`/juego/:jugador?modo=persona`.
 
 ## Tecnologías utilizadas
 
@@ -113,11 +127,12 @@ tic-tac-react/
 
 ## Rutas
 
-| Ruta              | Página    | Descripción                                   |
-| ----------------- | --------- | --------------------------------------------- |
-| `/`               | Inicio    | Ingreso del nombre del jugador                |
-| `/juego/:jugador` | Juego     | Tablero del juego (ruta dinámica con el nombre) |
-| `/puntajes`       | Puntajes  | Historial de partidas                         |
+| Ruta                    | Página    | Descripción                                         |
+| ----------------------- | --------- | --------------------------------------------------- |
+| `/`                     | Inicio    | Ingreso del nombre y selección del modo de juego    |
+| `/juego/:jugador`       | Juego     | Tablero del juego (ruta dinámica con el nombre)     |
+| `/juego/:jugador?modo=…`| Juego     | `modo=ia` (por defecto) o `modo=persona` (2 jugadores) |
+| `/puntajes`             | Puntajes  | Historial de partidas                               |
 
 Si se visita `/juego` sin nombre, se redirige automáticamente al inicio.
 
@@ -149,7 +164,9 @@ Ambas funciones manejan errores con `try/catch` y lanzan mensajes legibles.
 
 ## n8n
 
-Flujo para registrar y notificar el resultado de cada partida:
+Flujo para registrar y notificar el resultado de cada partida. La app envía el
+resultado al Webhook de n8n; si la comunicación falla, repite el guardado
+directamente en JSON Server como respaldo (por eso el historial nunca se pierde):
 
 ```
 Webhook
@@ -164,7 +181,11 @@ Responder al Webhook
 ```
 
 El workflow listo para importar está en `n8n/tic-tac-react-workflow.json`
-(ver `n8n/README-N8N.md` para los pasos de configuración).
+(ver `n8n/README-N8N.md` para los pasos de configuración). Consta de: el
+Webhook de entrada, un nodo **IF** que ramifica según el resultado, dos nodos
+**Set** que asignan el mensaje, un nodo **HTTP Request** que persiste la partida
+en JSON Server (`POST http://localhost:3000/partidas`) y el nodo final
+**Respond to Webhook** que devuelve `{ jugador, resultado, mensaje }`.
 
 **Webhook inicial:**
 
@@ -185,12 +206,13 @@ http://localhost:5678/webhook/tic-tac-react
 
 ## Cómo jugar
 
-1. Entra a `/`, escribe tu nombre y presiona **Comenzar juego**.
-2. X juega primero; los turnos se alternan entre X y O en el mismo dispositivo.
-3. Toca una casilla vacía para colocar tu símbolo.
-4. Gana quien complete una fila, columna o diagonal con el mismo símbolo.
-5. Si no queda ninguna casilla libre, es **empate**.
-6. Puedes reiniciar la partida en cualquier momento con **Reiniciar partida**.
+1. Entra a `/`, escribe tu nombre y elige el modo: **vs IA Bot Gatuno** o **2 Jugadores**.
+2. Presiona **Comenzar juego**. X juega primero.
+3. En modo 2 jugadores, los turnos alternan entre X y O en el mismo dispositivo.
+4. Toca una casilla vacía para colocar tu símbolo.
+5. Gana quien complete una fila, columna o diagonal con el mismo símbolo.
+6. Si no queda ninguna casilla libre, es **empate**.
+7. Puedes reiniciar la partida en cualquier momento con **Reiniciar partida**.
 
 ## Verificación rápida
 
@@ -199,9 +221,12 @@ http://localhost:5678/webhook/tic-tac-react
 npm run dev
 
 # Terminal 2
+npm run api
+
+# Terminal 3
 npm run json-server
 ```
 
-Con esto el juego funciona completo. n8n es opcional para ver el mensaje de
-felicitación; si no está activo, solo se muestra el aviso de que no fue posible
-conectarse.
+Con esto el juego funciona completo. n8n es opcional: si está activo, registra la
+partida y responde el mensaje; si no, la app guarda la partida directamente y
+muestra el aviso de que no fue posible conectarse.

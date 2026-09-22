@@ -84,6 +84,21 @@
     },
     {
       "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3000/partidas",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { jugador: $('Webhook').first().json.body.jugador, resultado: $('Webhook').first().json.body.resultado, ganador: $('Webhook').first().json.body.ganador, movimientos: $('Webhook').first().json.body.movimientos, fecha: $('Webhook').first().json.body.fecha, mensaje: $json.mensaje } }}",
+        "options": {}
+      },
+      "id": "8f4d0a5e-6c1b-4d2f-9e3a-1aa2bb3cc4dd",
+      "name": "Guardar resultado en JSON Server",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
         "respondWith": "allIncomingItems",
         "responseBody": "={{ { jugador: $('Webhook').first().json.body.jugador, resultado: $('Webhook').first().json.body.resultado, mensaje: $json.mensaje } }}",
         "options": {}
@@ -129,7 +144,7 @@
       "main": [
         [
           {
-            "node": "Responder al Webhook",
+            "node": "Guardar resultado en JSON Server",
             "type": "main",
             "index": 0
           }
@@ -137,6 +152,17 @@
       ]
     },
     "Mensaje de empate o derrota": {
+      "main": [
+        [
+          {
+            "node": "Guardar resultado en JSON Server",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar resultado en JSON Server": {
       "main": [
         [
           {
