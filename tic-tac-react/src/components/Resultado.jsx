@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-export default function Resultado({ ganador, jugador, onReiniciar }) {
+export default function Resultado({ ganador, jugador, oponente = 'el jugador O', onReiniciar }) {
   const navigate = useNavigate()
   const esEmpate = ganador === null
 
@@ -10,7 +10,7 @@ export default function Resultado({ ganador, jugador, onReiniciar }) {
         <p className="resultado-titulo">¡Empate!</p>
       ) : (
         <p className="resultado-titulo">
-          {ganador === 'X' ? `${jugador} gana la partida` : 'Gana el jugador O'}
+          {ganador === 'X' ? `${jugador} gana la partida` : `Gana ${oponente}`}
         </p>
       )}
       <p className="resultado-mensaje">

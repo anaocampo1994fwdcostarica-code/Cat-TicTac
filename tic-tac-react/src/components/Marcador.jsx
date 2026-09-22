@@ -7,13 +7,13 @@ export default function Marcador({
   movimientos,
 }) {
   return (
-    <div className="marcador">
+    <div className="marcador" aria-label="Marcador de la partida">
       <div className="marcador-item">
         <span className="marcador-label">Jugador</span>
         <span className="marcador-valor">{jugador}</span>
       </div>
       <div className="marcador-item">
-        <span className="marcador-label">Turno</span>
+        <span className="marcador-label">Turno de</span>
         <span className="marcador-valor">{turno}</span>
       </div>
       <div className="marcador-item">
@@ -29,7 +29,7 @@ export default function Marcador({
         <span className="marcador-valor">{empates}</span>
       </div>
       <div className="marcador-item">
-        <span className="marcador-label">Movimientos</span>
+        <span className="marcador-label">Movs</span>
         <span className="marcador-valor">{movimientos}</span>
       </div>
     </div>

@@ -51,7 +51,11 @@ export default function Puntajes() {
                 {partidas.map((partida) => (
                   <tr key={partida.id}>
                     <td>{partida.jugador}</td>
-                    <td>{partida.resultado}</td>
+                    <td>
+                      <span className={`resultado-pill ${partida.resultado.toLowerCase()}`}>
+                        {partida.resultado}
+                      </span>
+                    </td>
                     <td>{partida.movimientos}</td>
                     <td>{partida.fecha}</td>
                   </tr>

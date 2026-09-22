@@ -65,7 +65,18 @@ npm run dev
 
 Abre `http://localhost:5173`.
 
-**2. JSON Server (base de datos local):**
+**2. API del juego:**
+
+En otra terminal, desde `tic-tac-react/`, ejecuta:
+
+```bash
+npm run api
+```
+
+La API queda disponible en `http://localhost:4000` y expone las rutas
+`POST /api/game/new`, `POST /api/game/:id/move` y `POST /api/game/:id/reset`.
+
+**3. JSON Server (historial de partidas):**
 
 ```bash
 npm run json-server

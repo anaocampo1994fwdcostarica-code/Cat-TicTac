@@ -15,23 +15,33 @@ export default function Juego() {
     tablero,
     turno,
     ganador,
-    empate,
     movimientos,
+    combinacionGanadora,
+    stats,
+    modo,
+    partidaTerminada,
+    cargando,
+    error,
+    iniciar,
     realizarMovimiento,
     reiniciarPartida,
   } = useJuego()
 
-  const [marcador, setMarcador] = useState({ victorias: 0, derrotas: 0, empates: 0 })
   const [mensaje, setMensaje] = useState('')
+  const iniciadaRef = useRef(false)
   const registradaRef = useRef(false)
 
   useEffect(() => {
     if (!jugador) {
       navigate('/', { replace: true })
+      return
     }
+    if (!iniciadaRef.current) {
+      iniciadaRef.current = true
+      iniciar(jugador, 'ia')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jugador, navigate])
-
-  const partidaTerminada = ganador !== null || empate
 
   useEffect(() => {
     if (!partidaTerminada || registradaRef.current) return
@@ -41,12 +51,6 @@ export default function Juego() {
     if (ganador) {
       resultado = ganador === 'X' ? 'Victoria' : 'Derrota'
     }
-
-    setMarcador((actual) => ({
-      victorias: actual.victorias + (resultado === 'Victoria' ? 1 : 0),
-      derrotas: actual.derrotas + (resultado === 'Derrota' ? 1 : 0),
-      empates: actual.empates + (resultado === 'Empate' ? 1 : 0),
-    }))
 
     const partida = {
       jugador,
@@ -72,7 +76,7 @@ export default function Juego() {
     }
 
     registrarPartida()
-  }, [partidaTerminada, jugador, movimientos]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [partidaTerminada, ganador, movimientos, jugador])
 
   function nuevoJuego() {
     registradaRef.current = false
@@ -82,33 +86,69 @@ export default function Juego() {
 
   if (!jugador) return null
 
+  const oponente = modo === 'ia' ? 'la IA' : 'el jugador O'
+
   return (
     <div className="pagina">
       <Navbar />
       <main className="juego">
-        <h1 className="titulo-pagina">Hola, {jugador}!</h1>
+        <div className="saludo-fila">
+          <h1 className="titulo-pagina">¡Hola, <span>{jugador}!</span></h1>
+          <span className="estado-partida"><i /> En juego</span>
+        </div>
+
+        <div className="turno-actual">
+          <span>TURNO DE</span>
+          <strong>{jugador}</strong>
+          <b>{turno}</b>
+        </div>
+
+        {error && <p className="mensaje-error">{error}</p>}
+
+        {cargando && !tablero.some((celda) => celda !== null) && (
+          <p className="mensaje">Cargando partida...</p>
+        )}
 
         <Marcador
           jugador={jugador}
           turno={turno}
-          victorias={marcador.victorias}
-          derrotas={marcador.derrotas}
-          empates={marcador.empates}
+          victorias={stats.wins}
+          derrotas={stats.losses}
+          empates={stats.draws}
           movimientos={movimientos}
         />
 
-        <Tablero tablero={tablero} onClickCasilla={realizarMovimiento} />
+        <Tablero
+          tablero={tablero}
+          combinacionGanadora={combinacionGanadora}
+          deshabilitado={cargando}
+          onClickCasilla={realizarMovimiento}
+        />
 
         <div className="acciones">
-          <button type="button" className="boton" onClick={nuevoJuego}>
-            Reiniciar partida
+          <div className="modo-partida" aria-label="Modo de juego">
+            <span className="modo-activo">▣ &nbsp;vs IA Bot Gatuno</span>
+            <span>♟ &nbsp;2 Jugadores</span>
+          </div>
+          <button
+            type="button"
+            className="boton boton-reiniciar"
+            onClick={nuevoJuego}
+            disabled={cargando}
+          >
+            ↻ &nbsp; Reiniciar partida
           </button>
         </div>
 
         {mensaje && <p className="mensaje">{mensaje}</p>}
 
         {partidaTerminada && (
-          <Resultado ganador={ganador} jugador={jugador} onReiniciar={nuevoJuego} />
+          <Resultado
+            ganador={ganador}
+            jugador={jugador}
+            oponente={oponente}
+            onReiniciar={nuevoJuego}
+          />
         )}
       </main>
     </div>

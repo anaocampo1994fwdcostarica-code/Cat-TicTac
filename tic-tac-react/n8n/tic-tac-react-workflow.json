@@ -1,4 +1,5 @@
 {
+  "id": 1,
   "name": "Tic Tac React - Guardar y responder resultado",
   "nodes": [
     {
@@ -48,7 +49,7 @@
               "name": "mensaje",
               "type": "string",
               "typeName": "string",
-              "value": "=¡Felicidades! Ganaste la partida."
+              "value": "¡Felicidades! Ganaste la partida."
             }
           ]
         },
@@ -69,7 +70,7 @@
               "name": "mensaje",
               "type": "string",
               "typeName": "string",
-              "value": "=Partida finalizada. ¡Sigue jugando!"
+              "value": "Partida finalizada. ¡Sigue jugando!"
             }
           ]
         },
@@ -83,24 +84,8 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "http://localhost:3000/partidas",
-        "sendHeaders": false,
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ { jugador: $json.jugador, resultado: $json.resultado, ganador: $json.ganador, movimientos: $json.movimientos, mensaje: $json.mensaje } }}",
-        "options": {}
-      },
-      "id": "8f46da0b-5e97-4207-c16d-4dd5ee6ff708",
-      "name": "Guardar resultado en JSON Server",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [1000, 300]
-    },
-    {
-      "parameters": {
         "respondWith": "allIncomingItems",
-        "responseBody": "={{ { jugador: $json.jugador, resultado: $json.resultado, mensaje: $json.mensaje } }}",
+        "responseBody": "={{ { jugador: $('Webhook').first().json.body.jugador, resultado: $('Webhook').first().json.body.resultado, mensaje: $json.mensaje } }}",
         "options": {}
       },
       "id": "9057eb1c-6fa8-4318-d27e-5ee6ff708819",
@@ -144,7 +129,7 @@
       "main": [
         [
           {
-            "node": "Guardar resultado en JSON Server",
+            "node": "Responder al Webhook",
             "type": "main",
             "index": 0
           }
@@ -152,17 +137,6 @@
       ]
     },
     "Mensaje de empate o derrota": {
-      "main": [
-        [
-          {
-            "node": "Guardar resultado en JSON Server",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Guardar resultado en JSON Server": {
       "main": [
         [
           {
