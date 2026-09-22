@@ -1,0 +1,20 @@
+{
+  "partidas": [
+    {
+      "jugador": "Ana",
+      "resultado": "Empate",
+      "ganador": "Empate",
+      "movimientos": 9,
+      "fecha": "2026-09-22",
+      "id": 1
+    },
+    {
+      "jugador": "Ana",
+      "resultado": "Victoria",
+      "ganador": "X",
+      "movimientos": 5,
+      "fecha": "2026-09-22",
+      "id": 2
+    }
+  ]
+}

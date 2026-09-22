@@ -1,0 +1,331 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --violeta: #7c3aed;
+  --violeta-claro: #a78bfa;
+  --azul: #3b82f6;
+  --blanco: #ffffff;
+  --fondo: #f4f5fb;
+  --texto: #1e1b4b;
+  --gris: #6b7280;
+  --error: #dc2626;
+  --sombra: rgba(30, 27, 75, 0.15);
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #eef2ff 0%, var(--fondo) 100%);
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+/* ---------- Navegación ---------- */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: var(--blanco);
+  box-shadow: 0 2px 10px var(--sombra);
+}
+
+.navbar-logo {
+  font-weight: 800;
+  font-size: 1.25rem;
+  text-decoration: none;
+  background: linear-gradient(90deg, var(--violeta), var(--azul));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.navbar-enlaces {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar-enlaces a {
+  text-decoration: none;
+  color: var(--texto);
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.navbar-enlaces a:hover {
+  background: var(--violeta-claro);
+  color: var(--blanco);
+}
+
+/* ---------- Páginas ---------- */
+.pagina {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.inicio,
+.juego,
+.puntajes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.titulo {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  background: linear-gradient(90deg, var(--violeta), var(--azul));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.subtitulo {
+  color: var(--gris);
+  font-size: 1.1rem;
+}
+
+.titulo-pagina {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: var(--violeta);
+}
+
+/* ---------- Formulario ---------- */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 360px;
+  background: var(--blanco);
+  padding: 1.75rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px var(--sombra);
+}
+
+.formulario label {
+  font-weight: 700;
+}
+
+.formulario input {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.6rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.formulario input:focus {
+  border-color: var(--violeta);
+}
+
+/* ---------- Botones ---------- */
+.boton {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  color: var(--texto);
+  background: #e5e7eb;
+  transition: transform 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+
+.boton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--sombra);
+}
+
+.boton-principal {
+  background: linear-gradient(90deg, var(--violeta), var(--azul));
+  color: var(--blanco);
+}
+
+/* ---------- Marcador ---------- */
+.marcador {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 720px;
+}
+
+.marcador-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: var(--blanco);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  box-shadow: 0 2px 8px var(--sombra);
+}
+
+.marcador-label {
+  font-size: 0.8rem;
+  color: var(--gris);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.marcador-valor {
+  font-size: 1.1rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Tablero ---------- */
+.tablero {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+.casilla {
+  aspect-ratio: 1;
+  font-size: clamp(2.5rem, 8vw, 3.5rem);
+  font-weight: 800;
+  border: none;
+  border-radius: 0.9rem;
+  cursor: pointer;
+  background: var(--blanco);
+  color: var(--texto);
+  box-shadow: 0 4px 12px var(--sombra);
+  transition: transform 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+
+.casilla:not(:disabled):hover {
+  transform: translateY(-3px);
+  background: var(--violeta-claro);
+  color: var(--blanco);
+  box-shadow: 0 6px 16px var(--sombra);
+}
+
+.casilla:disabled {
+  cursor: default;
+}
+
+.casilla.ocupada.X {
+  color: var(--violeta);
+}
+
+.casilla.ocupada.O {
+  color: var(--azul);
+}
+
+/* ---------- Resultado ---------- */
+.resultado {
+  background: var(--blanco);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px var(--sombra);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.resultado-titulo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--violeta);
+}
+
+.resultado-mensaje {
+  color: var(--gris);
+}
+
+.resultado-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* ---------- Mensajes ---------- */
+.mensaje {
+  color: var(--gris);
+}
+
+.mensaje-error {
+  color: var(--error);
+  font-weight: 600;
+}
+
+.acciones {
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- Tabla de puntajes ---------- */
+.tabla-contenedor {
+  width: 100%;
+  max-width: 720px;
+  overflow-x: auto;
+  background: var(--blanco);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px var(--sombra);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th,
+.tabla td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tabla th {
+  background: linear-gradient(90deg, var(--violeta), var(--azul));
+  color: var(--blanco);
+}
+
+.tabla tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla tbody tr:hover {
+  background: #f5f3ff;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .marcador {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tabla-contenedor {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .marcador {
+    grid-template-columns: 1fr;
+  }
+}
