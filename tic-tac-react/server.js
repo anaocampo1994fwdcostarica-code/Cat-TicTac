@@ -162,12 +162,24 @@ const servidor = http.createServer(async (req, res) => {
       if (req.method === 'POST' && partes[3] === 'move') {
         const cuerpo = await leerCuerpo(req)
         const indice = Number(cuerpo.index)
-        if (!Number.isInteger(indice) || indice < 0 || indice > 8 || partida.board[indice] !== null || partida.status !== 'IN_PROGRESS') {
+        const jugador = String(cuerpo.player || '')
+
+        if (
+          !Number.isInteger(indice) ||
+          indice < 0 || indice > 8 ||
+          partida.board[indice] !== null ||
+          partida.status !== 'IN_PROGRESS'
+        ) {
           responder(res, 400, { error: 'Movimiento no válido.' })
           return
         }
 
-        partida.board[indice] = 'X'
+        if ((jugador !== 'X' && jugador !== 'O') || jugador !== partida.turn) {
+          responder(res, 400, { error: 'No es tu turno.' })
+          return
+        }
+
+        partida.board[indice] = jugador
         partida.movesCount += 1
         let resultado = revisarTablero(partida.board)
         if (resultado.winner || partida.board.every(Boolean)) {
@@ -185,7 +197,7 @@ const servidor = http.createServer(async (req, res) => {
             }
           }
         } else {
-          partida.turn = 'O'
+          partida.turn = partida.turn === 'X' ? 'O' : 'X'
         }
 
         responder(res, 200, estadoPublico(partida))

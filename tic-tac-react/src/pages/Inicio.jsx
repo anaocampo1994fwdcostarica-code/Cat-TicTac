@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.jsx'
 
 export default function Inicio() {
   const [nombre, setNombre] = useState('')
+  const [modo, setModo] = useState('ia')
   const [error, setError] = useState('')
   const nombreRef = useRef(null)
   const navigate = useNavigate()
@@ -23,7 +24,7 @@ export default function Inicio() {
     }
 
     setError('')
-    navigate(`/juego/${encodeURIComponent(nombreLimpio)}`)
+    navigate(`/juego/${encodeURIComponent(nombreLimpio)}?modo=${modo}`)
   }
 
   return (
@@ -45,6 +46,31 @@ export default function Inicio() {
             maxLength="20"
           />
           {error && <p className="mensaje-error">{error}</p>}
+
+          <fieldset className="modo-opciones">
+            <legend>Modo de juego</legend>
+            <label className="modo-opcion">
+              <input
+                type="radio"
+                name="modo"
+                value="ia"
+                checked={modo === 'ia'}
+                onChange={() => setModo('ia')}
+              />
+              <span>▣&nbsp; vs IA Bot Gatuno</span>
+            </label>
+            <label className="modo-opcion">
+              <input
+                type="radio"
+                name="modo"
+                value="persona"
+                checked={modo === 'persona'}
+                onChange={() => setModo('persona')}
+              />
+              <span>♟&nbsp; 2 Jugadores (mismo dispositivo)</span>
+            </label>
+          </fieldset>
+
           <button type="submit" className="boton boton-principal">
             Comenzar juego
           </button>

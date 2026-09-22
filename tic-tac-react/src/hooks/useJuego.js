@@ -35,7 +35,7 @@ export default function useJuego() {
     setError('')
     setCargando(true)
     try {
-      const datos = await gameApi.makeMove(gameId, posicion, 'X')
+      const datos = await gameApi.makeMove(gameId, posicion, turno)
       setPartida(datos)
     } catch (err) {
       setError(err.message)
